@@ -1,5 +1,5 @@
 /* =========
-  Full Screen Menu 
+  Mega Hamburger
   A Simple Full Screen Menu For Squarespace
   This Code is Licensed by Will-Myers.com
 ========== */
@@ -33,7 +33,31 @@
         return section;
 
       } catch (error) {
-        return `<div class="load-plugin wm-alert"><p>Hey there, it looks like the url you are using, <code>${url}</code>, doesn't exist. Check the URL in the code block. And don't worry, this note is only showing in the Squarespace Editor, not on the live site.</p><p>If you continue to have issues, reach out to our team here: <a>https://will-myers.com/ask</a></p></div>`
+        return `<div class="load-error wm-alert">
+          <p>
+            Hey there, it looks like the url you are using, <code>${url}</code>, doesn't exist. Check the URL your <em>Design » Custom CSS</em> area. And don't worry, this note is only showing in the Squarespace Editor, not on the live site.
+          </p>
+          <p>
+            If you continue to have issues, reach out to our team here: <a>https://will-myers.com/ask</a>
+          </p>
+        </div>
+        <style>
+        body:not(.sqs-edit-mode) .load-error{
+          display:none;
+        }
+        .load-error {
+          max-width: var(--sqs-site-max-width);
+          margin:auto;
+          padding: 0 var(--sqs-site-gutter);
+        }
+        @media(max-width:767px){
+          .load-error {
+            max-width: var(--sqs-site-max-width);
+            margin:auto;
+            padding: 0 var(--sqs-mobile-site-gutter);
+          }
+        }
+        </style>`
         console.error(error);
       }
     },
@@ -190,7 +214,26 @@
           html = '';
      
       if (window.location.pathname == url && window.top !== window.self) {
-        html = `<p>You're currently on the menu page!</p>`;
+        html = `<p class="load-error wm-alert">
+          You're currently on the menu page! The menu won't display here.
+        </p>
+        <style>
+        body:not(.sqs-edit-mode) .load-error{
+          display:none;
+        }
+        .load-error {
+          max-width: var(--sqs-site-max-width);
+          margin:auto;
+          padding: 0 var(--sqs-site-gutter);
+        }
+        @media(max-width:767px){
+          .load-error {
+            max-width: var(--sqs-site-max-width);
+            margin:auto;
+            padding: 0 var(--sqs-mobile-site-gutter);
+          }
+        }
+        </style>`;
       } else {
         html = await utils.getHTML(url);
       }
