@@ -35,7 +35,7 @@
       } catch (error) {
         return `<div class="load-error wm-alert">
           <p>
-            Hey there, it looks like the url you are using, <code>${url}</code>, doesn't exist. Check the URL your <em>Design » Custom CSS</em> area. And don't worry, this note is only showing in the Squarespace Editor, not on the live site.
+            Hey there, it looks like the url you are using, <code>${url}</code>, doesn't exist. Check the URL in your <em>Design » Custom CSS</em> area. And don't worry, this note is only showing in the Squarespace Editor, not on the live site.
           </p>
           <p>
             If you continue to have issues, reach out to our team here: <a>https://will-myers.com/ask</a>
