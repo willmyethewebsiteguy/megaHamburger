@@ -5,10 +5,12 @@
 ========== */
 
 /* Always Make Hamburger Visible */
-
 .header-display-desktop .header-burger{
   display:block;
   margin-left: 1.4vw;
+}
+.wm-mega-hamburger .hide-burger {
+  display: inline-block !important;
 }
 .header--menu-open #header{
   pointer-events:auto;
