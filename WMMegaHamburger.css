@@ -1,0 +1,45 @@
+/* =========
+  Popup El
+  A simple Popup Plugin for Squarespace
+  This Code is Licensed by Will-Myers.com
+========== */
+
+/* Always Make Hamburger Visible */
+
+.header-display-desktop .header-burger{
+  display:block;
+  margin-left: 1.4vw;
+}
+.header--menu-open #header{
+  pointer-events:auto;
+}
+.header--menu-open #header > .header-menu{
+  opacity: 1;
+  visibility: visible;
+  overflow:scroll;
+  user-select:auto;
+}
+
+.wm-mega-hamburger {
+  text-align:start;
+}
+.wm-mega-hamburger .header-menu--folder-list{
+  text-align:start;
+  max-height: var(--max-height, initial);
+  max-width: var(--max-width, initial);
+  box-shadow: 0.3px 0.5px 0.7px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
+    1.5px 2.9px 3.7px -0.4px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
+    2.7px 5.4px 6.8px -0.7px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
+    4.5px 8.9px 11.2px -1.1px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
+    7.1px 14.3px 18px -1.4px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
+    11.2px 22.3px 28.1px -1.8px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
+    17px 33.9px 42.7px -2.1px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
+    25px 50px 62.9px -2.5px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34);
+}
+
+
+
+/*Style Resets*/
+.site-wrapper .header-menu .header-menu-nav a:not(.btn){
+  color: var(--paragraphLinkColor);
+}
