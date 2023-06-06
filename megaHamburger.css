@@ -3,19 +3,19 @@
   A Mega Hamburger Menu for Squarespace
   This Code is Licensed by Will-Myers.com
 ========== */
-
 /* Always Make Hamburger Visible */
-.header-display-desktop .header-burger{
+.wm-mega-hamburger .header-display-desktop .header-burger{
   display:block;
   margin-left: 1.4vw;
 }
 .wm-mega-hamburger .hide-burger {
   display: inline-block !important;
 }
-.header--menu-open #header{
+
+.wm-mega-hamburger.header--menu-open #header{
   pointer-events:auto;
 }
-.header--menu-open #header > .header-menu{
+.wm-mega-hamburger.header--menu-open #header > .header-menu{
   opacity: 1;
   visibility: visible;
   overflow:scroll;
@@ -26,22 +26,97 @@
   text-align:start;
 }
 .wm-mega-hamburger .header-menu--folder-list{
+  --shadow-hsl: 0, 0%, 0%;
   text-align:start;
-  max-height: var(--max-height, initial);
+  max-height:0px;
   max-width: var(--max-width, initial);
-  box-shadow: 0.3px 0.5px 0.7px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
-    1.5px 2.9px 3.7px -0.4px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
-    2.7px 5.4px 6.8px -0.7px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
-    4.5px 8.9px 11.2px -1.1px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
-    7.1px 14.3px 18px -1.4px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
-    11.2px 22.3px 28.1px -1.8px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
-    17px 33.9px 42.7px -2.1px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34), 
-    25px 50px 62.9px -2.5px hsl(var(--shadow-color, 0deg 00% 50%) / 0.34);
+  transition: max-height .2s ease;
+  box-shadow:  1.5px 2.9px 3.7px -0.4px hsla(var(--shadow-hsl), var(--shadow-opacity)), 
+    11.2px 22.3px 28.1px -1.8px hsla(var(--shadow-hsl), var(--shadow-opacity)), 
+    25px 50px 62.9px -2.5px hsla(var(--shadow-hsl), var(--shadow-opacity));
+}
+
+.wm-mega-hamburger.header--menu-open .header-menu--folder-list{
+  max-height: calc(var(--max-height, initial) - var(--wm-header-height, 0px));
+}
+
+.wm-mega-hamburger.header--menu-open .header-menu .header-menu-nav-list{
+  overflow-x:hidden;
+}
+
+/*Menu Open Backdrop*/
+.wm-mega-hamburger #siteWrapper{
+  position:relative;
+}
+.wm-mega-hamburger #page::after,
+.wm-mega-hamburger #footer-sections::after{
+  content:'';
+  position:absolute;
+  display:block;
+  top:0;
+  bottom:0 !important;
+  height:100%;
+  width:100%;
+  background-color:var(--overlay-color, hsl(0, 0%, 0%));
+  opacity:0;
+  z-index:-1;
+  transition: opacity .3s ease,
+    z-index 0s ease .3s;
+}
+.wm-mega-hamburger.header--menu-open #page::after,
+.wm-mega-hamburger.header--menu-open #footer-sections::after{
+  opacity: var(--overlay-opacity, 0.25);
+  z-index:99;
+  transition: opacity .3s ease, 
+    z-index 0s ease 0s;
+  
+}
+.wm-mega-hamburger.header--menu-open #page,
+.wm-mega-hamburger.header--menu-open #footer-section{
+  filter: blur(var(--overlay-blur, 0px));
+}
+
+/*Bottom Border*/
+.header-menu--folder-list{
+  border-bottom: var(--bottom-border-thickness, 0px) solid var(--bottom-border-color, currentColor);
 }
 
 
+/*Nav Layouts with Hamburger*/
+/*Nav Layout Center*/
+.wm-mega-hamburger .header-display-desktop .header-burger{
+  flex: 0 1 var(--hamburger-width);
+}
+
+.wm-mega-hamburger .header-layout-nav-center .header-display-desktop .header-actions, 
+.wm-mega-hamburger .header-layout-branding-center .header-display-desktop .header-actions{
+  width: calc(33% - var(--hamburger-width));
+}
+
+
+/*Nav Layout Right*/
+.wm-mega-hamburger  .header-layout-nav-right .header-display-desktop .header-actions, 
+.wm-mega-hamburger .header-layout-nav-left .header-display-desktop .header-actions
+{
+  min-width: var(--hamburger-width);
+}
+.wm-mega-hamburger  .header-layout-nav-right .header-display-desktop .header-title-nav-wrapper, 
+.wm-mega-hamburger  .header-layout-nav-left .header-display-desktop .header-title-nav-wrapper{
+  flex: 1 0 calc(67% - var(--hamburger-width));
+}
+
+
+/*Branding & Nav Center*/
+.wm-mega-hamburger  .header-layout-branding-center-nav-center .header-display-desktop .header-actions--left{
+  flex: 0 1 calc(25% + var(--hamburger-width) + 1.4vw);
+  max-width: calc(25% + var(--hamburger-width) + 1.4vw);
+}
+.wm-mega-hamburger  .header-layout-branding-center-nav-center .header-display-desktop .header-title-nav-wrapper{
+  flex: 0 0 calc(50% - var(--hamburger-width) - 1.4vw);
+}
+
 
 /*Style Resets*/
-.site-wrapper .header-menu .header-menu-nav a:not(.btn){
+.wm-mega-hamburger .site-wrapper .header-menu .header-menu-nav a:not(.btn){
   color: var(--paragraphLinkColor);
 }
