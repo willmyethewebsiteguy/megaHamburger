@@ -81,8 +81,9 @@
   function loadScripts() {
     if (!utils.loadScripts.length) return;
     let hasLoaded = [];
+    console.log(utils.loadScripts)
     for (let el of utils.loadScripts){
-      if (hasLoaded.includes(el.src) || hasLoaded.includes(el.innerHTML)) continue;
+      if (hasLoaded.includes(el.src) || hasLoaded.includes(el.innerHTML) || el.type == 'application/json') continue;
       const script = document.createElement('script');
       script.src = el.src;
       script.async = el.async;
@@ -96,7 +97,12 @@
       };
 
       if (el.innerHTML) {
-        eval(el.innerHTML);
+        try {
+          eval(el.innerHTML);
+        } catch(err) {
+          console.log('error: ', err)
+          console.log('error loading: ', el)
+        }
         hasLoaded.push(el.innerHTML)
       } else {
         document.body.appendChild(script);
@@ -120,18 +126,18 @@
       if (!scripts.length) return;
       scripts.forEach(el => utils.loadScripts.push(el))
     }
-    
     function pushSqsSpecificScripts(instance) {
       /*Like Background Videos*/
-      let hasBkgVideos = instance.elements.bkgVideos;
+      let hasBkgVideos = instance.settings.hasBkgVideos;
+      let hasGallerySections = instance.settings.hasGallerySections;
+      let hasListSections = instance.settings.hasListSections;
       
       /*If Background Video*/
-      if (hasBkgVideos.length) {
+      if (hasBkgVideos || hasGallerySections || hasListSections) {
         let sqsLoaderScript = document.querySelector('body > [src*="https://static1.squarespace.com/static/vta"]');
         utils.loadScripts.push(sqsLoaderScript)
       }
     }
-    
     function toggleMenu(instance){
       let burger = instance.elements.burger;
       burger.click();
@@ -159,8 +165,22 @@
           colorTheme = instance.settings.colorTheme,
           defaultColorTheme = instance.settings.defaultColorTheme;
 
-      header.classList.add(defaultColorTheme)
       header.classList.remove(colorTheme)
+      header.classList.add(defaultColorTheme)
+    }
+
+    function maintainHeaderHeight(instance) {
+      let header = instance.elements.header;
+      let height = '';
+
+      function setHeight() {
+        height = header.getBoundingClientRect().height + 'px';
+        header.style.setProperty('--wm-header-height', height);
+      }
+
+      setHeight();
+      header.addEventListener('transitionend', setHeight);
+      document.addEventListener('resize', setHeight)
     }
 
     function menuOpened(instance) {
@@ -208,12 +228,19 @@
       })
     }
 
+    function setHamburgerWidth(instance){
+      let hamburger = document.querySelector('.header-burger');
+      let width = hamburger.offsetWidth + 'px';
+      instance.elements.header.style.setProperty('--hamburger-width', width);
+    }
+
     async function buildHTML(instance) {
       let rootFolder = instance.elements.rootFolder,
-          url = instance.settings.desktopUrl,
-          html = '';
-     
-      if (window.location.pathname == url && window.top !== window.self) {
+        url = instance.settings.desktopUrl,
+        html = '',
+        onPage = window.location.pathname == url && window.top !== window.self;
+      
+      if (onPage) {
         html = `<p class="load-error wm-alert">
           You're currently on the menu page! The menu won't display here.
         </p>
@@ -237,13 +264,15 @@
       } else {
         html = await utils.getHTML(url);
       }
+      
+      
       instance.elements.header.classList.add('wm-mega-hamburger')
-      rootFolder.innerHTML = `<div class="site-wrapper">${html}</div>`
+      rootFolder.innerHTML = `<div class="site-wrapper">${html}</div>`;
       
       window.dispatchEvent(new Event('megaHamburger:loaded'));
     }
 
-    function Constructor() {
+    function Constructor(url) {
       let instance = this;
       let el = document.querySelector('.wm-mega-hamburger');
       instance.settings = {
@@ -251,7 +280,7 @@
           return document.body.classList.contains('header--menu-open');
         },
         get desktopUrl() {
-          let url = utils.getPropertyValue(el, '--url');
+          //let url = utils.getPropertyValue(el, '--url');
           return url;
         },
         get colorMatch() {
@@ -265,34 +294,39 @@
         get hasBkgVideos() {
           return !!instance.elements.bkgVideos.length;
         },
-        get defaultColorTheme() {
-          let hcl = instance.elements.header.classList,
-              theme = '';
-          if (hcl.contains('white')) {
-            theme = 'white'
-          } else if (hcl.contains('white-bold')) {
-            theme = 'white-bold'
-          } else if (hcl.contains('light')) {
-            theme = 'light'
-          } else if (hcl.contains('light-bold')) {
-            theme = 'light-bold'
-          } else if (hcl.contains('bright-inverse')) {
-            theme = 'bright-inverse'
-          } else if (hcl.contains('bright')) {
-            theme = 'bright'
-          } else if (hcl.contains('dark')) {
-            theme = 'dark'
-          } else if (hcl.contains('dark-bold')) {
-            theme = 'dark-bold'
-          } else if (hcl.contains('black')) {
-            theme = 'black'
-          } else if (hcl.contains('black-bold')) {
-            theme = 'black-bold'
-          } else {
-            theme = 'white'
-          }
-          return theme
+        get hasListSections() {
+          return !!instance.elements.listSection.length;
         },
+        get hasGallerySections() {
+          return !!instance.elements.gallerySection.length;
+        },
+        defaultColorTheme: '',
+        setColorTheme: function() {
+          let hcl = instance.elements.header.classList;
+          if (hcl.contains('white')) {
+            this.defaultColorTheme = 'white'
+          } else if (hcl.contains('white-bold')) {
+            this.defaultColorTheme = 'white-bold'
+          } else if (hcl.contains('light')) {
+            this.defaultColorTheme = 'light'
+          } else if (hcl.contains('light-bold')) {
+            this.defaultColorTheme = 'light-bold'
+          } else if (hcl.contains('bright-inverse')) {
+            this.defaultColorTheme = 'bright-inverse'
+          } else if (hcl.contains('bright')) {
+            this.defaultColorTheme = 'bright'
+          } else if (hcl.contains('dark')) {
+            this.defaultColorTheme = 'dark'
+          } else if (hcl.contains('dark-bold')) {
+            this.defaultColorTheme = 'dark-bold'
+          } else if (hcl.contains('black')) {
+            this.defaultColorTheme = 'black'
+          } else if (hcl.contains('black-bold')) {
+            this.defaultColorTheme = 'black-bold'
+          } else {
+            this.defaultColorTheme = 'white'
+          }
+        }
       };
       instance.elements = {
         body: document.body,
@@ -314,11 +348,18 @@
         get bkgVideos() {
           return this.rootFolder.querySelectorAll('.section-background .sqs-video-background-native');
         },
+        get listSection() {
+          return this.rootFolder.querySelectorAll('.page-section.user-items-list-section');
+        },
+        get gallerySection() {
+          return this.rootFolder.querySelectorAll('.page-section.gallery-section');
+        },
         get bkgImages() {
           return this.rootFolder.querySelectorAll('.section-background > img:not(.wm-image-loaded)');
         }
       };
-
+      
+      instance.settings.setColorTheme();
       instance.elements.body.classList.add('wm-mega-hamburger')
       window.addEventListener('megaHamburger:loaded', function(){
         menuToggleEventListener(instance);
@@ -329,7 +370,9 @@
         imageLoader(instance);
         addClickEventToClose(instance)
       });
+      maintainHeaderHeight(instance);
       buildHTML(instance);
+      setHamburgerWidth(instance);
     }
 
     return Constructor;
@@ -339,10 +382,9 @@
     document.body.insertAdjacentHTML('beforeend', `<span class="wm-mega-hamburger" style"display:none;"></span>`);
     let span = document.querySelector('.wm-mega-hamburger');
     let url = utils.getPropertyValue(span, '--url');
-    if (url) {
-      new LoadMenu();
-    }
-
+    if (!url || url === 'none') return;
+    if (url.charAt(0) !== "/") url = '/' + url;
+    new LoadMenu(url);
   }
   initContentLoads();
   window.addEventListener('mercury:load', initContentLoads)
