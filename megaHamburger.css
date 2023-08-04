@@ -50,7 +50,6 @@
 }
 .wm-mega-hamburger #page::after,
 .wm-mega-hamburger #footer-sections::after{
-  content:'';
   position:absolute;
   display:block;
   top:0;
@@ -65,6 +64,7 @@
 }
 .wm-mega-hamburger.header--menu-open #page::after,
 .wm-mega-hamburger.header--menu-open #footer-sections::after{
+  content:'';
   opacity: var(--overlay-opacity, 0.25);
   z-index:99;
   transition: opacity .3s ease, 
