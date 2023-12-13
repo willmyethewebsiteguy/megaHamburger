@@ -3,6 +3,7 @@
   A Mega Hamburger Menu for Squarespace
   This Code is Licensed by Will-Myers.com
 ========== */
+
 /* Always Make Hamburger Visible */
 .wm-mega-hamburger .header-display-desktop .header-burger{
   display:block;
@@ -119,4 +120,9 @@
 /*Style Resets*/
 .wm-mega-hamburger .site-wrapper .header-menu .header-menu-nav a:not(.btn){
   color: var(--paragraphLinkColor);
+}
+
+/*Hide Folder Contents Except New Nav*/
+[data-folder="root"] > *:not(.site-wrapper){
+  display:none;
 }
