@@ -116,6 +116,8 @@
       let container = instance.elements.rootFolder;
       window.Squarespace?.initializeLayoutBlocks(Y, Y.one(container));
       window.Squarespace?.initializeNativeVideo(Y, Y.one(container));
+      window.Squarespace?.initializePageContent(Y, Y.one(container))
+
     }
 
     function pushScripts(instance){
@@ -267,7 +269,7 @@
       
       
       instance.elements.header.classList.add('wm-mega-hamburger')
-      rootFolder.innerHTML = `<div class="site-wrapper">${html}</div>`;
+      rootFolder.insertAdjacentHTML('beforeend', `<div class="site-wrapper">${html}</div>`)
       
       window.dispatchEvent(new Event('megaHamburger:loaded'));
     }
