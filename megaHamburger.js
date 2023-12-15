@@ -81,7 +81,6 @@
   function loadScripts() {
     if (!utils.loadScripts.length) return;
     let hasLoaded = [];
-    console.log(utils.loadScripts)
     for (let el of utils.loadScripts){
       if (hasLoaded.includes(el.src) || hasLoaded.includes(el.innerHTML) || el.type == 'application/json') continue;
       const script = document.createElement('script');
@@ -239,8 +238,10 @@
     async function buildHTML(instance) {
       let rootFolder = instance.elements.rootFolder,
         url = instance.settings.desktopUrl,
+        mobileUrl = instance.settings.mobileUrl,
         html = '',
-        onPage = window.location.pathname == url && window.top !== window.self;
+        mobileHTML = '',
+        onPage = (window.location.pathname == mobileUrl || window.location.pathname == url) && window.top !== window.self;
       
       if (onPage) {
         html = `<p class="load-error wm-alert">
@@ -265,19 +266,70 @@
         </style>`;
       } else {
         html = await utils.getHTML(url);
+        if (mobileUrl)  {
+          mobileHTML = await utils.getHTML(mobileUrl);
+        }
+      }
+      let innerHTML = `<div class="site-wrapper">
+        <div class="desktop-menu">${html}</div>
+      </div>`;
+      if (mobileHTML) {
+        innerHTML = `<div class="site-wrapper has-mobile">
+        <div class="desktop">${html}</div>
+        <div class="mobile">${mobileHTML}</div>
+      </div>`;
+        instance.settings.hasMobile = true;
       }
       
       
       instance.elements.header.classList.add('wm-mega-hamburger')
-      rootFolder.insertAdjacentHTML('beforeend', `<div class="site-wrapper">${html}</div>`)
+      rootFolder.insertAdjacentHTML('beforeend', innerHTML)
       
       window.dispatchEvent(new Event('megaHamburger:loaded'));
     }
+
+    function addMissingColorTheme() {
+      const themes = ['.white', '.white-bold', '.light', '.light-bold', '.bright', '.bright-inverse', '.dark', '.dark-bold', '.black', '.black-bold'];
+      const styleElement = document.getElementById('colorThemeStyles');
+      let styleContent = styleElement.innerHTML;
+  
+      // Find which theme is missing
+      let missingTheme = themes.find(theme => {
+          // Use a regular expression to check for the exact class name
+          const themeRegex = new RegExp(theme + '\\s*\\{', 'g');
+          return !styleContent.match(themeRegex);
+      });
+  
+      if (missingTheme) {
+          // Extract the second :root rule
+          const rootRuleRegex = /:root\s*\{[^\}]*\}/g;
+          let rootRuleMatches = styleContent.match(rootRuleRegex);
+          let secondRootRule = rootRuleMatches && rootRuleMatches[1];
+  
+          if (secondRootRule) {
+              // Replace :root with the missing theme class
+              secondRootRule = secondRootRule.replace(':root', missingTheme);
+  
+              // Create a new style element
+              const newStyleElement = document.createElement('style');
+              newStyleElement.appendChild(document.createTextNode(secondRootRule));
+  
+              // Insert the new style element after the original style element
+              styleElement.parentNode.insertBefore(newStyleElement, styleElement.nextSibling);
+            } else {
+              console.error('Second :root rule not found');
+          }
+      } else {
+          console.log('No theme is missing');
+      }
+    }
+
 
     function Constructor(url) {
       let instance = this;
       let el = document.querySelector('.wm-mega-hamburger');
       instance.settings = {
+        hasMobile: false,
         get isOpen() {
           return document.body.classList.contains('header--menu-open');
         },
@@ -285,9 +337,15 @@
           //let url = utils.getPropertyValue(el, '--url');
           return url;
         },
+        get mobileUrl() {
+          let prefix = '';
+          let url = utils.getPropertyValue(el, '--mobile-url');
+          if (url.charAt(0) !== "/") url = '/' + url;
+          return url;
+        },
         get colorMatch() {
           let shouldMatch = utils.getPropertyValue(el, '--color-match');
-          shouldMatch  = shouldMatch === false ? false : true;
+          shouldMatch = shouldMatch === false ? false : true;
           return shouldMatch
         },
         get colorTheme() {
@@ -342,6 +400,9 @@
           return this.header.querySelector('[data-folder="root"]');
         },
         get firstSectionColorTheme() {
+          if (instance.settings.hasMobile && window.innerWidth < 767) {
+            return this.rootFolder.querySelector('.mobile .page-section').dataset.sectionTheme || 'white';
+          }
           return this.rootFolder.querySelector('.page-section').dataset.sectionTheme || 'white';
         },
         get scripts() {
@@ -371,6 +432,7 @@
         loadScripts();
         imageLoader(instance);
         addClickEventToClose(instance)
+        addMissingColorTheme()
       });
       maintainHeaderHeight(instance);
       buildHTML(instance);
