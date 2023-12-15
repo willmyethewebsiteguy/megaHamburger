@@ -5,6 +5,7 @@
 ========== */
 
 /* Always Make Hamburger Visible */
+
 .wm-mega-hamburger .header-display-desktop .header-burger{
   display:block;
   margin-left: 1.4vw;
@@ -54,6 +55,7 @@
   position:absolute;
   display:block;
   top:0;
+  box-sizing: border-box;
   bottom:0 !important;
   height:100%;
   width:100%;
@@ -72,6 +74,7 @@
     z-index 0s ease 0s;
   
 }
+
 .wm-mega-hamburger.header--menu-open #page,
 .wm-mega-hamburger.header--menu-open #footer-section{
   filter: blur(var(--overlay-blur, 0px));
@@ -117,12 +120,35 @@
 }
 
 
-/*Style Resets*/
-.wm-mega-hamburger .site-wrapper .header-menu .header-menu-nav a:not(.btn){
-  color: var(--paragraphLinkColor);
-}
-
 /*Hide Folder Contents Except New Nav*/
 [data-folder="root"] > *:not(.site-wrapper){
   display:none;
+}
+
+/*With Mobile Menu*/
+@media(max-width: 767px) {
+  [data-folder="root"] .site-wrapper.has-mobile > .desktop{
+    display: none;
+  }
+  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
+    display: block;
+  }
+}
+@media(min-width: 767px) {
+  [data-folder="root"] .site-wrapper.has-mobile > .desktop{
+    display: block;
+  }
+  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
+    display: none;
+  }
+}
+
+
+/*Coloring Adjustments*/
+.header--menu-open .header .header-inner .header-title-text a {
+  color: var(--siteTitleColor);
+}
+
+.primary-button-style-solid [data-folder="root"] .site-wrapper a.sqs-button-element--primary {
+  color: var(--primaryButtonTextColor);
 }
