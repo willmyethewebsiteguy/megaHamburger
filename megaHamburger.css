@@ -121,24 +121,24 @@
 
 
 /*Hide Folder Contents Except New Nav*/
-[data-folder="root"] > *:not(.site-wrapper){
+.wm-mega-hamburger  [data-folder="root"] > *:not(.site-wrapper){
   display:none;
 }
 
 /*With Mobile Menu*/
 @media(max-width: 767px) {
-  [data-folder="root"] .site-wrapper.has-mobile > .desktop{
+  .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile > .desktop{
     display: none;
   }
-  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
+  .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
     display: block;
   }
 }
 @media(min-width: 767px) {
-  [data-folder="root"] .site-wrapper.has-mobile > .desktop{
+  .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile > .desktop{
     display: block;
   }
-  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
+  .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
     display: none;
   }
 }
