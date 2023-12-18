@@ -116,7 +116,6 @@
       window.Squarespace?.initializeLayoutBlocks(Y, Y.one(container));
       window.Squarespace?.initializeNativeVideo(Y, Y.one(container));
       window.Squarespace?.initializePageContent(Y, Y.one(container))
-
     }
 
     function pushScripts(instance){
@@ -242,7 +241,7 @@
         html = '',
         mobileHTML = '',
         onPage = (window.location.pathname == mobileUrl || window.location.pathname == url) && window.top !== window.self;
-      
+    
       if (onPage) {
         html = `<p class="load-error wm-alert">
           You're currently on the menu page! The menu won't display here.
@@ -270,6 +269,8 @@
           mobileHTML = await utils.getHTML(mobileUrl);
         }
       }
+
+      //console.log(mobileHTML)
       let innerHTML = `<div class="site-wrapper">
         <div class="desktop-menu">${html}</div>
       </div>`;
@@ -279,8 +280,7 @@
         <div class="mobile">${mobileHTML}</div>
       </div>`;
         instance.settings.hasMobile = true;
-      }
-      
+      } 
       
       instance.elements.header.classList.add('wm-mega-hamburger')
       rootFolder.insertAdjacentHTML('beforeend', innerHTML)
@@ -324,7 +324,6 @@
       }
     }
 
-
     function Constructor(url) {
       let instance = this;
       let el = document.querySelector('.wm-mega-hamburger');
@@ -340,7 +339,7 @@
         get mobileUrl() {
           let prefix = '';
           let url = utils.getPropertyValue(el, '--mobile-url');
-          if (url.charAt(0) !== "/") url = '/' + url;
+          if (url && url.charAt(0) !== "/") url = '/' + url;
           return url;
         },
         get colorMatch() {
