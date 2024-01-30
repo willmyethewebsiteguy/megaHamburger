@@ -291,6 +291,7 @@
     function addMissingColorTheme() {
       const themes = ['.white', '.white-bold', '.light', '.light-bold', '.bright', '.bright-inverse', '.dark', '.dark-bold', '.black', '.black-bold'];
       const styleElement = document.getElementById('colorThemeStyles');
+      if (!styleElement) return;
       let styleContent = styleElement.innerHTML;
   
       // Find which theme is missing
