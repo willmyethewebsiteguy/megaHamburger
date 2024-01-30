@@ -152,3 +152,8 @@
 .primary-button-style-solid [data-folder="root"] .site-wrapper a.sqs-button-element--primary {
   color: var(--primaryButtonTextColor);
 }
+
+/*Hide Nav Edit Button when Not In Edit Mode*/
+body:not(.sqs-edit-mode-active) .header-edit-button-container{
+  display:none !important;
+}
