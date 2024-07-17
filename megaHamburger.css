@@ -23,6 +23,9 @@
   overflow: auto;
   user-select:auto;
 }
+.wm-mega-hamburger [data-folder].header-menu-nav-folder {
+  overflow-y: auto;
+}
 
 .wm-mega-hamburger {
   text-align:start;
