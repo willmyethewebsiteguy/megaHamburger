@@ -20,7 +20,7 @@
 .wm-mega-hamburger.header--menu-open #header > .header-menu{
   opacity: 1;
   visibility: visible;
-  overflow:scroll;
+  overflow: auto;
   user-select:auto;
 }
 
