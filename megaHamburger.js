@@ -1,5 +1,5 @@
 /* =========
-  Mega Hamburger
+  Full Screen Menu 
   A Simple Full Screen Menu For Squarespace
   This Code is Licensed by Will-Myers.com
 ========== */
@@ -146,7 +146,7 @@
     function addClickEventToClose(instance) {
       document.addEventListener('click', function(e){
         if (!instance.settings.isOpen) return;
-        if (e.target.closest('#header')) return;
+        if (e.target.closest('#header') && !e.target.closest('[data-close-mega-hamburger]')) return;
         toggleMenu(instance)
       })
     }
@@ -158,6 +158,8 @@
       
       header.classList.remove(defaultColorTheme)
       header.classList.add(colorTheme)
+      header.dataset.sectionTheme = colorTheme;
+      header.querySelector('.header-menu').dataset.sectionTheme = colorTheme;
     }
     
     function unMatchColorScheme(instance) {
@@ -167,6 +169,8 @@
 
       header.classList.remove(colorTheme)
       header.classList.add(defaultColorTheme)
+      header.dataset.sectionTheme = defaultColorTheme;
+      header.querySelector('.header-menu').dataset.sectionTheme = defaultColorTheme;
     }
 
     function maintainHeaderHeight(instance) {
@@ -288,40 +292,93 @@
       window.dispatchEvent(new Event('megaHamburger:loaded'));
     }
 
-    function addMissingColorTheme() {
-      const themes = ['.white', '.white-bold', '.light', '.light-bold', '.bright', '.bright-inverse', '.dark', '.dark-bold', '.black', '.black-bold'];
-      const styleElement = document.getElementById('colorThemeStyles');
-      if (!styleElement) return;
-      let styleContent = styleElement.innerHTML;
-  
-      // Find which theme is missing
-      let missingTheme = themes.find(theme => {
-          // Use a regular expression to check for the exact class name
-          const themeRegex = new RegExp(theme + '\\s*\\{', 'g');
-          return !styleContent.match(themeRegex);
-      });
-  
-      if (missingTheme) {
-          // Extract the second :root rule
-          const rootRuleRegex = /:root\s*\{[^\}]*\}/g;
-          let rootRuleMatches = styleContent.match(rootRuleRegex);
-          let secondRootRule = rootRuleMatches && rootRuleMatches[1];
-  
-          if (secondRootRule) {
-              // Replace :root with the missing theme class
-              secondRootRule = secondRootRule.replace(':root', missingTheme);
-  
-              // Create a new style element
-              const newStyleElement = document.createElement('style');
-              newStyleElement.appendChild(document.createTextNode(secondRootRule));
-  
-              // Insert the new style element after the original style element
-              styleElement.parentNode.insertBefore(newStyleElement, styleElement.nextSibling);
-            } else {
-              console.error('Second :root rule not found');
+    async function addMissingColorTheme() {
+      // List of all expected selectors
+      const expectedSelectors = [
+        '[data-section-theme="white"]',
+        '[data-section-theme="white-bold"]',
+        '[data-section-theme="light"]',
+        '[data-section-theme="light-bold"]',
+        '[data-section-theme="bright"]',
+        '[data-section-theme="bright-inverse"]',
+        '[data-section-theme="dark"]',
+        '[data-section-theme="dark-bold"]',
+        '[data-section-theme="black"]',
+        '[data-section-theme="black-bold"]'
+      ];
+      try {
+        // Fetch the stylesheet
+        const response = await fetch('/site.css');
+        const cssText = await response.text();
+    
+        // Parse the CSS
+        const styleSheet = new CSSStyleSheet();
+        styleSheet.replaceSync(cssText);
+    
+        // Find existing selectors
+        const existingSelectors = new Set();
+        for (const rule of styleSheet.cssRules) {
+          if (rule.selectorText) {
+            expectedSelectors.forEach(selector => {
+              if (rule.selectorText.includes(selector)) {
+                existingSelectors.add(selector);
+              }
+            });
           }
-      } else {
-          console.log('No theme is missing');
+        }
+    
+        // Find the missing selector
+        const missingSelector = expectedSelectors.find(selector => !existingSelectors.has(selector));
+          
+        // Get the CSS declaration for the second rule starting with :root
+        let rootRuleCount = 0;
+        let secondRootRuleDeclaration = '';
+        for (const rule of styleSheet.cssRules) {
+          if (rule.selectorText && rule.selectorText.startsWith(':root')) {
+            rootRuleCount++;
+            if (rootRuleCount === 2) {
+              for (let i = 0; i < rule.style.length; i++) {
+                const property = rule.style[i];
+                const value = rule.style.getPropertyValue(property);
+                secondRootRuleDeclaration += `${property}: ${value}; `;
+              }
+              break; // Stop after finding the second :root rule
+            }
+          }
+        }
+    
+        if (rootRuleCount < 2) {
+          console.log('There is no second :root rule in the stylesheet.');
+        }
+    
+        if (missingSelector) {
+    
+          // Create a new stylesheet for the missing selector, including the second :root declaration
+          const newStyleSheet = new CSSStyleSheet();
+          newStyleSheet.insertRule(`:root, ${missingSelector} { ${secondRootRuleDeclaration} }`, 0);
+    
+          // Convert the new stylesheet to text
+          let newCssText = '';
+          for (const rule of newStyleSheet.cssRules) {
+            newCssText += rule.cssText + '\n';
+          }
+    
+          // Create a new style element
+          const newStyleElement = document.createElement('style');
+          newStyleElement.textContent = newCssText;
+    
+          // Find the existing stylesheet link element
+          const existingStylesheet = document.querySelector('link[href$="site.css"]');
+    
+          // Insert the new style element before the existing stylesheet
+          if (existingStylesheet) {
+            existingStylesheet.parentNode.insertBefore(newStyleElement, existingStylesheet);
+          } else {
+            console.error('Could not find the existing stylesheet link element.');
+          }
+        } 
+      } catch (error) {
+        console.error('Error processing stylesheet:', error);
       }
     }
 
