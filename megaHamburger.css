@@ -6,6 +6,7 @@
 
 /* Always Make Hamburger Visible */
 
+
 .wm-mega-hamburger .header-display-desktop .header-burger{
   display:block;
   margin-left: 1.4vw;
@@ -144,6 +145,14 @@
   .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
     display: none;
   }
+}
+
+/*Remove Padding Top From First Section*/
+.wm-mega-hamburger [data-folder="root"] .desktop-menu > .page-section:first-child,
+.wm-mega-hamburger [data-folder="root"] .desktop > .page-section:first-child,
+.wm-mega-hamburger [data-folder="root"] .mobile-menu > .page-section:first-child,
+.wm-mega-hamburger [data-folder="root"] .mobile > .page-section:first-child{
+  padding-top: 0px !important;
 }
 
 
