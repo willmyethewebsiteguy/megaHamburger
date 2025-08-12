@@ -6,143 +6,133 @@
 
 /* Always Make Hamburger Visible */
 
-
-.wm-mega-hamburger .header-display-desktop .header-burger{
-  display:block;
+.wm-mega-hamburger .header-display-desktop .header-burger {
+  display: block;
   margin-left: 1.4vw;
 }
 .wm-mega-hamburger .hide-burger {
   display: inline-block !important;
 }
 
-.wm-mega-hamburger.header--menu-open #header{
-  pointer-events:auto;
+.wm-mega-hamburger.header--menu-open #header {
+  pointer-events: auto;
 }
-.wm-mega-hamburger.header--menu-open #header > .header-menu{
+.wm-mega-hamburger.header--menu-open #header > .header-menu {
   opacity: 1;
   visibility: visible;
   overflow-y: auto;
-  user-select:auto;
+  user-select: auto;
 }
 .wm-mega-hamburger [data-folder].header-menu-nav-folder {
   overflow-y: auto;
 }
 
 .wm-mega-hamburger {
-  text-align:start;
+  text-align: start;
 }
-.wm-mega-hamburger .header-menu--folder-list{
+.wm-mega-hamburger .header-menu--folder-list {
   --shadow-hsl: 0, 0%, 0%;
-  text-align:start;
-  max-height:0px;
+  text-align: start;
+  max-height: 0px;
   max-width: var(--max-width, initial);
-  transition: max-height .2s ease;
-  box-shadow:  1.5px 2.9px 3.7px -0.4px hsla(var(--shadow-hsl), var(--shadow-opacity)), 
-    11.2px 22.3px 28.1px -1.8px hsla(var(--shadow-hsl), var(--shadow-opacity)), 
+  transition: max-height 0.2s ease;
+  box-shadow: 1.5px 2.9px 3.7px -0.4px hsla(var(--shadow-hsl), var(--shadow-opacity)), 11.2px 22.3px 28.1px -1.8px hsla(var(--shadow-hsl), var(--shadow-opacity)),
     25px 50px 62.9px -2.5px hsla(var(--shadow-hsl), var(--shadow-opacity));
 }
 
-.wm-mega-hamburger.header--menu-open .header-menu--folder-list{
+.wm-mega-hamburger.header--menu-open .header-menu--folder-list {
   max-height: calc(var(--max-height, initial) - var(--wm-header-height, 0px));
 }
 
-.wm-mega-hamburger.header--menu-open .header-menu .header-menu-nav-list{
-  overflow-x:hidden;
+.wm-mega-hamburger.header--menu-open .header-menu .header-menu-nav-list {
+  overflow-x: hidden;
 }
 
 /*Menu Open Backdrop*/
-.wm-mega-hamburger #siteWrapper{
-  position:relative;
+.wm-mega-hamburger #siteWrapper {
+  position: relative;
 }
 .wm-mega-hamburger #page::after,
-.wm-mega-hamburger #footer-sections::after{
-  position:absolute;
-  display:block;
-  top:0;
+.wm-mega-hamburger #footer-sections::after {
+  position: absolute;
+  display: block;
+  top: 0;
   box-sizing: border-box;
-  bottom:0 !important;
-  height:100%;
-  width:100%;
-  background-color:var(--overlay-color, hsl(0, 0%, 0%));
-  opacity:0;
-  z-index:-1;
-  transition: opacity .3s ease,
-    z-index 0s ease .3s;
+  bottom: 0 !important;
+  height: 100%;
+  width: 100%;
+  background-color: var(--overlay-color, hsl(0, 0%, 0%));
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease, z-index 0s ease 0.3s;
 }
 .wm-mega-hamburger.header--menu-open #page::after,
-.wm-mega-hamburger.header--menu-open #footer-sections::after{
-  content:'';
+.wm-mega-hamburger.header--menu-open #footer-sections::after {
+  content: "";
   opacity: var(--overlay-opacity, 0.25);
-  z-index:99;
-  transition: opacity .3s ease, 
-    z-index 0s ease 0s;
-  
+  z-index: 99;
+  transition: opacity 0.3s ease, z-index 0s ease 0s;
 }
 
 .wm-mega-hamburger.header--menu-open #page,
-.wm-mega-hamburger.header--menu-open #footer-section{
+.wm-mega-hamburger.header--menu-open #footer-section {
   filter: blur(var(--overlay-blur, 0px));
 }
 
 /*Bottom Border*/
-.header-menu--folder-list{
+.header-menu--folder-list {
   border-bottom: var(--bottom-border-thickness, 0px) solid var(--bottom-border-color, currentColor);
 }
 
-
 /*Nav Layouts with Hamburger*/
 /*Nav Layout Center*/
-.wm-mega-hamburger .header-display-desktop .header-burger{
+.wm-mega-hamburger .header-display-desktop .header-burger {
   flex: 0 1 var(--hamburger-width);
 }
 
-.wm-mega-hamburger .header-layout-nav-center .header-display-desktop .header-actions, 
-.wm-mega-hamburger .header-layout-branding-center .header-display-desktop .header-actions{
+.wm-mega-hamburger .header-layout-nav-center .header-display-desktop .header-actions,
+.wm-mega-hamburger .header-layout-branding-center .header-display-desktop .header-actions {
   width: calc(33% - var(--hamburger-width));
 }
 
-
 /*Nav Layout Right*/
-.wm-mega-hamburger  .header-layout-nav-right .header-display-desktop .header-actions, 
-.wm-mega-hamburger .header-layout-nav-left .header-display-desktop .header-actions
-{
+.wm-mega-hamburger .header-layout-nav-right .header-display-desktop .header-actions,
+.wm-mega-hamburger .header-layout-nav-left .header-display-desktop .header-actions {
   min-width: var(--hamburger-width);
 }
-.wm-mega-hamburger  .header-layout-nav-right .header-display-desktop .header-title-nav-wrapper, 
-.wm-mega-hamburger  .header-layout-nav-left .header-display-desktop .header-title-nav-wrapper{
+.wm-mega-hamburger .header-layout-nav-right .header-display-desktop .header-title-nav-wrapper,
+.wm-mega-hamburger .header-layout-nav-left .header-display-desktop .header-title-nav-wrapper {
   flex: 1 0 calc(67% - var(--hamburger-width));
 }
 
-
 /*Branding & Nav Center*/
-.wm-mega-hamburger  .header-layout-branding-center-nav-center .header-display-desktop .header-actions--left{
+.wm-mega-hamburger .header-layout-branding-center-nav-center .header-display-desktop .header-actions--left {
   flex: 0 1 calc(25% + var(--hamburger-width) + 1.4vw);
   max-width: calc(25% + var(--hamburger-width) + 1.4vw);
 }
-.wm-mega-hamburger  .header-layout-branding-center-nav-center .header-display-desktop .header-title-nav-wrapper{
+.wm-mega-hamburger .header-layout-branding-center-nav-center .header-display-desktop .header-title-nav-wrapper {
   flex: 0 0 calc(50% - var(--hamburger-width) - 1.4vw);
 }
 
-
 /*Hide Folder Contents Except New Nav*/
-.wm-mega-hamburger  [data-folder="root"] > *:not(.site-wrapper){
-  display:none;
+.wm-mega-hamburger [data-folder="root"] > *:not(.site-wrapper) {
+  display: none;
 }
 
 /*With Mobile Menu*/
-@media(max-width: 767px) {
-  .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile > .desktop{
+@media (max-width: 767px) {
+  .wm-mega-hamburger [data-folder="root"] .site-wrapper.has-mobile > .desktop {
     display: none;
   }
-  .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
+  .wm-mega-hamburger [data-folder="root"] .site-wrapper.has-mobile > .mobile {
     display: block;
   }
 }
-@media(min-width: 767px) {
-  .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile > .desktop{
+@media (min-width: 767px) {
+  .wm-mega-hamburger [data-folder="root"] .site-wrapper.has-mobile > .desktop {
     display: block;
   }
-  .wm-mega-hamburger  [data-folder="root"] .site-wrapper.has-mobile  > .mobile{
+  .wm-mega-hamburger [data-folder="root"] .site-wrapper.has-mobile > .mobile {
     display: none;
   }
 }
@@ -151,21 +141,72 @@
 .wm-mega-hamburger [data-folder="root"] .desktop-menu > .page-section:first-child,
 .wm-mega-hamburger [data-folder="root"] .desktop > .page-section:first-child,
 .wm-mega-hamburger [data-folder="root"] .mobile-menu > .page-section:first-child,
-.wm-mega-hamburger [data-folder="root"] .mobile > .page-section:first-child{
+.wm-mega-hamburger [data-folder="root"] .mobile > .page-section:first-child {
   padding-top: 0px !important;
 }
-
 
 /*Coloring Adjustments*/
 .header--menu-open .header .header-inner .header-title-text a {
   color: var(--siteTitleColor);
 }
 
+/* 
+** Button Style Adjustments 
+** We need to override a:not(.btn) in the header
+** Increase specificity for Solid & Outline styles, for Flex & Not Flex animations
+*/
 .primary-button-style-solid [data-folder="root"] .site-wrapper a.sqs-button-element--primary {
   color: var(--primaryButtonTextColor);
 }
+@media (hover: hover) {
+  .tweak-global-animations-animation-type-flex.primary-button-style-solid [data-folder="root"] .site-wrapper a.sqs-button-element--primary:not(input):hover {
+    color: var(--primaryButtonBackgroundColor);
+  }
+  .primary-button-style-outline [data-folder="root"] .site-wrapper a.sqs-button-element--primary:hover {
+    background: var(--primaryButtonBackgroundColor);
+    color: var(--primaryButtonTextColor);
+  }
+  .tweak-global-animations-animation-type-flex.primary-button-style-outline [data-folder="root"] .site-wrapper a.sqs-button-element--primary:not(input):hover {
+    color: var(--primaryButtonTextColor);
+    background-color: transparent;
+  }
+}
+
+.secondary-button-style-solid [data-folder="root"] .site-wrapper a.sqs-button-element--secondary {
+  color: var(--secondaryButtonTextColor);
+}
+@media (hover: hover) {
+  .tweak-global-animations-animation-type-flex.secondary-button-style-solid [data-folder="root"] .site-wrapper a.sqs-button-element--secondary:not(input):hover {
+    color: var(--secondaryButtonBackgroundColor);
+  }
+  .secondary-button-style-outline [data-folder="root"] .site-wrapper a.sqs-button-element--secondary:hover {
+    background: var(--secondaryButtonBackgroundColor);
+    color: var(--secondaryButtonTextColor);
+  }
+  .tweak-global-animations-animation-type-flex.secondary-button-style-outline [data-folder="root"] .site-wrapper a.sqs-button-element--secondary:not(input):hover {
+    color: var(--secondaryButtonTextColor);
+    background-color: transparent;
+  }
+}
+
+.tertiary-button-style-solid [data-folder="root"] .site-wrapper a.sqs-button-element--tertiary {
+  color: var(--tertiaryButtonTextColor);
+}
+@media (hover: hover) {
+  .tweak-global-animations-animation-type-flex.tertiary-button-style-solid [data-folder="root"] .site-wrapper a.sqs-button-element--tertiary:not(input):hover {
+    color: var(--tertiaryButtonBackgroundColor);
+  }
+  .tertiary-button-style-outline [data-folder="root"] .site-wrapper a.sqs-button-element--tertiary:hover {
+    background: var(--tertiaryButtonBackgroundColor);
+    color: var(--tertiaryButtonTextColor);
+  }
+  .tweak-global-animations-animation-type-flex.tertiary-button-style-outline [data-folder="root"] .site-wrapper a.sqs-button-element--tertiary:not(input):hover {
+    color: var(--tertiaryButtonTextColor);
+    background-color: transparent;
+  }
+}
 
 /*Hide Nav Edit Button when Not In Edit Mode*/
-body:not(.sqs-edit-mode-active) .header-edit-button-container{
-  display:none !important;
+body:not(.sqs-edit-mode-active) .header-edit-button-container {
+  display: none !important;
 }
