@@ -119,6 +119,10 @@
   display: none;
 }
 
+.wm-mega-hamburger .header-display-desktop .header-burger {
+  order: 3;
+}
+
 /*With Mobile Menu*/
 @media (max-width: 767px) {
   .wm-mega-hamburger [data-folder="root"] .site-wrapper.has-mobile > .desktop {
