@@ -17,7 +17,7 @@
     async getHTML(url, selector = null) {
       try {
         let response = await fetch(`${url}`),
-            selector = utils.templateVersion == '7' ? 'main > *:first-child' : '#sections' ;
+            selector = utils.templateVersion == '7' ? 'main > *:first-child' : '#sections, #page-regions' ;
 
         // If the call failed, throw an error
         if (!response.ok) {
