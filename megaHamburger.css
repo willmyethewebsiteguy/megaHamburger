@@ -145,7 +145,11 @@
 .wm-mega-hamburger [data-folder="root"] .desktop-menu > .page-section:first-child,
 .wm-mega-hamburger [data-folder="root"] .desktop > .page-section:first-child,
 .wm-mega-hamburger [data-folder="root"] .mobile-menu > .page-section:first-child,
-.wm-mega-hamburger [data-folder="root"] .mobile > .page-section:first-child {
+.wm-mega-hamburger [data-folder="root"] .mobile > .page-section:first-child,
+.wm-mega-hamburger [data-folder="root"] .desktop-menu > .region:first-child > .page-section,
+.wm-mega-hamburger [data-folder="root"] .desktop > .region:first-child > .page-section,
+.wm-mega-hamburger [data-folder="root"] .mobile-menu > .region:first-child > .page-section,
+.wm-mega-hamburger [data-folder="root"] .mobile > .region:first-child > .page-section {
   padding-top: 0px !important;
 }
 
